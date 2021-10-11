@@ -1,0 +1,443 @@
+body{
+    background-color: #0000ff1a;
+}
+
+.mycontainer{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.codeNactions{
+    height: calc(100% - 120px);
+    margin: 0!important;
+}
+
+.com-infos{
+    background-color: rgb(246, 246, 238);
+    border-bottom: 3px solid #d4d4d4;
+    height: 120px;
+    width: calc(100% + 15px);
+    padding: 0 90px;
+}
+
+.com-infos > .col{
+    color: #525252;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+._bjB .form-check-input{
+    width: 10%;
+    height: 100%;
+    cursor: pointer;
+}
+
+._bjB .form-check-label{
+    font-size: 16px;
+    margin: 2% 0 0 14%;
+    font-weight: 500;
+    width: 200px;
+}
+.project-name,.message{
+    margin-left: 1.5%;
+    font-weight: bold;
+    border: 2px solid #d4d1d1;
+    border-radius: 5px;
+    padding: 4px 20px;
+}
+.com-infos .col > div{
+    margin: 24px 0;
+}
+
+.currentNback {
+    height: 65px;
+}
+
+.actions{
+    background-color: rgb(246, 246, 238);
+    border-left: 3px solid #d4d4d4;
+    padding-top: 25px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.mybuttons{
+    height: 415px;
+    display: grid;
+}
+
+.backButt{
+    background-color: #0f143a;
+    width: 100px;
+    height: 35px;
+    font-size: 13px;
+    margin: 5px 18px 0 0;
+}
+
+._bj1{
+    font-size: 40px;
+    font-weight: 700;
+}
+.TotalCom{
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.commitNum{
+    font-size: 40px;
+    font-weight: 600;
+    color: #25264c;
+}
+
+._bj2 > div{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+.mybuttons .buttons{
+    position: relative;
+    height: 180px;
+}
+
+.buttons > button{
+    position: absolute;
+    height: 50px;
+    width: 35%;
+    min-width: 140px;
+    border-radius: 12px;
+    box-shadow: none!important;
+    font-weight: 600;
+    color: #525252;
+    font-family: system-ui;
+}
+
+._bj4{
+    justify-content: center;
+    margin-top: 50px;
+    height: 80px;
+}
+
+.saveButt{
+    background-color: #79c56b;
+    height: 45px;
+    width: 25%;
+    min-width: 110px;
+}
+
+._bj5{
+    border-radius: 7px;
+    border-color: #fffed1;
+    color: #fffefe!important;
+    font-weight: bolder;
+}
+
+.atomButt{
+    background-color: #a2eca2;
+    top: 34px;
+    left: 5%;
+}
+.tangButt{
+    background-color: #e2a3a3;
+    top: 34px;
+    right: 5%;
+}
+.skipButt{
+    background-color: #c0c0f9;
+    top: 110px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.clusters-desc{
+    height: 235px;
+    padding-top: 30px;
+}
+
+._bjA{
+    border: 3px solid #dadada;
+    border-radius: 9px;
+    background-color: #ececec;
+    margin: 0 3%;
+}
+
+.clusters-desc ._bjA div{
+    margin: 1.5% 5% 1.5% 8%;
+}
+
+.clusters-desc ._bjA label{
+    font-weight: bold;
+}
+
+.clusters-desc ._bjA input{
+    width: 90%;
+    margin-left: 2%;
+    padding-left: 15px;
+    font-family: monospace;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+._bjB .form-check{
+    margin: 5% 0;
+}
+._bjB{
+    display: grid;
+    justify-content: center;
+    width: 83%;
+    transform: translate(9%, 0);
+    border: 3px solid #dadada;
+    border-radius: 9px;
+    background-color: #ececec;
+    padding: 10px 0%;
+    margin: 0 0 25px 0;
+}
+
+.com-code{
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 30px;
+    background-color: white;
+}
+
+.code{
+    position: relative;
+    border: 4px solid #b3b3b3;
+    margin: 30px 40px 30px 15px;
+}
+
+.fileName{
+    border: 1px solid #b3b3b3;
+    height: 40px;
+    width: 100%;
+    padding: 7px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    background: #b3b3b3;
+    color: #403f3f;
+}
+
+table, tr{
+    width: 100%;
+    white-space: pre;
+    font-size: 13px;
+    font-family: i-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+}
+
+.code td:first-child{
+    width: 40px;
+    opacity: 0;
+    padding: 0 20px;
+}
+
+td:nth-child(2){
+    width: 10px;
+    text-align: center;
+    font-size: 9px;
+    font-family: cursive;
+    padding: 0 20px;
+}
+
+tr{
+    height: 25px;
+}
+
+.changes{
+    width: 100%;
+    overflow-x: auto;
+}
+
+.add td:nth-child(3){
+    background-color: #e6ffec;
+}
+
+.del td:nth-child(3){
+    background-color: #ffebe9;
+}
+
+.clustering tr:not(.noChange) td:first-child{
+    text-align: center;
+    cursor: pointer;
+    background-color: #feffb1;
+    font-weight: bolder;
+    border: 1px solid #c2c2cb;
+    border-left: none;
+    opacity: 1;
+    font-size: 12px;
+}
+
+.chosen{
+    border: 3px solid #7b7676 !important;
+}
+
+.tangButt:not(.chosen){
+    background-color: #e8caca94;
+}
+
+.atomButt:not(.chosen){
+    background-color: #a2eca28c;
+}
+
+.skipButt:not(.chosen){
+    background-color: #e1e1f3bf;
+}
+
+table{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.clustering tr:not(.noChange){
+    cursor: pointer;
+}
+
+.login_view{    
+    width: 100%;
+    height: 260px;
+    position: absolute;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    top: 30%;
+}
+
+.login_view span{
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.login_view button{
+    width: 100px;
+    height: 45px;
+    border: 1px solid #dbd6d6;
+    background-color: #83b9e7;
+    border-radius: 9px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 37% 0 37%;
+    color: white;
+}
+
+#username{
+    width: 385px;
+    height: 100px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 2px 3px #c5c599;
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 25px;
+    background-color: #263852;
+    color: white;
+}
+
+#username:-webkit-autofill,
+#username:-webkit-autofill:hover, 
+#username:-webkit-autofill:focus, 
+#username:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 60px #263852 inset !important;
+    -webkit-text-fill-color: white !important;
+}
+
+.fileName span:first-child{
+    font-weight: bolder;
+    margin-right: 20px;
+    color: #05070a;
+    font-family: monospace;
+}
+
+.modal-body{
+    display: grid;
+    list-style-type: circle;
+    padding: 31px 55px 20px 70px;
+    font-family: revert;
+    color: #ff3333c2;
+    font-weight: 500;
+    font-size: 14px;
+    background-color: #ff000003;
+    margin-bottom: 0px!important;
+}
+
+.modal-dialog{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%)!important;
+}
+
+ul.modal-body li {
+    margin-bottom: 15px;
+}
+
+
+.clustering tr.ui-selected:not(.noChange) td:nth-child(3), 
+.clustering tr.ui-selecting:not(.noChange) td:nth-child(3) { 
+    opacity: 0.4; border: 1px solid #02020261;
+}
+
+.clusters_popup{
+    position: absolute;
+    text-align: center;
+    border: 3px solid #7a7a7a;
+    width: 45px;
+    display: grid;
+    font-weight: 600;
+    transform: translate(-50%, -50%)!important;
+    top: 50%;
+    left: calc(100% + 39px);
+    border-radius: 12px;
+}
+
+.clusters_popup span{
+    border-bottom: 0.5px solid grey;
+    font-family: monospace;
+    font-size: 18px;
+    padding: 6px 0;
+    cursor: pointer;
+    background: #feffb1;
+}
+
+.clusters_popup span:first-child{
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+
+.clusters_popup span:nth-child(4){
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+}
+
+.clusters_popup span:hover{
+    background-color: #f5f5bf;
+}
+
+.com-infos a{
+    position: absolute;
+    top: calc(50% - 25px);
+    right: 0%;
+    font-size: 13px;
+    background-color: #4a4a4a;
+    padding: 15px 15px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+}
+
+.structureButt{
+    margin-left: 30px;
+    padding: 4px 17px;
+    border-radius: 12px;
+    background-color: #415bbbb3;
+    border: none;
+    color: white;
+    font-family: monospace;
+}

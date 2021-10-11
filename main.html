@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Labeling app</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    <div class="login_view">    
+      <span>Entrer votre identifiant:</span>
+      <input type="text" id="username">
+      <button class="loginButt">LOGIN</button>
+    </div>
+    <div class="mycontainer d-none">
+      <div class="row com-infos">
+        <div class="col">
+          <div>Nom du projet:
+            <span class="project-name"></span>
+            <button class="structureButt"> Structure du projet</button>
+          </div>
+          <div>Message du commit:<span class="message"></span></div>
+          <a href="" target="_blank">Lien sur Github</a>
+        </div>
+      </div>
+      <div class="row codeNactions">
+        <div class="col-12 col-md-8 com-code"></div>
+        <div class="col-6 col-md-4 actions">
+          <div class="row currentNback">
+            <div class="col _bj2">
+              <div>
+                <span class="commitNum"></span>
+                <span class="_bj1">/</span>
+                <span class="TotalCom"></span></div>  
+            </div>
+          </div>
+          <div class="row mybuttons">
+            <div class="buttons col-12">
+              <button type="button" class="btn atomButt" data-type="atomic">Atomique</button>
+              <button type="button" class="btn tangButt" data-type="tangled">Enchevêtré</button>
+              <button type="button" class="btn skipButt" data-type="unknown">Difficile à juger</button>
+            </div>
+            <div class="clusters-desc">
+              <div class="_bjB">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="perfectif" id="CheckPerfectif">
+                  <label class="form-check-label" for="CheckPerfectif">
+                    Changements Perfectifs
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="correctif" id="CheckCorrectif">
+                  <label class="form-check-label" for="CheckCorrectif">
+                    Changements Correctifs
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="adaptif" id="CheckAdaptif">
+                  <label class="form-check-label" for="CheckAdaptif">
+                    Changements Adaptifs
+                  </label>
+                </div>
+              </div>
+              <div class="_bjA d-none">
+                <div>  
+                  <label for="cl1">1)</label>
+                  <input type="text" data-cluster="1" name="cl1">
+                </div>
+                <div>  
+                  <label for="cl2">2)</label>
+                  <input type="text" data-cluster="2" name="cl2">
+                </div>
+                <div>  
+                  <label for="cl3">3)</label>
+                  <input type="text" data-cluster="3" name="cl3">
+                </div>
+                <div>  
+                  <label for="cl4">4)</label>
+                  <input type="text" data-cluster="4" name="cl4">
+                </div>
+              </div>
+              <div class="row _bj4 save">
+                <button type="button" class="btn _bj5 backButt">Back</button>
+                <button type="button" class="btn _bj5 saveButt">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="temp" class="d-none"></div>
+    
+    <!-- Modal: Errors -->
+    <div class="modal errors fade " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <ul class="modal-body"></ul>
+        </div>
+      </div>
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" ></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" ></script>  
+  <script src="main.js"></script>
+  </body>
+</html>
