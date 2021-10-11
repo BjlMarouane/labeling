@@ -10,6 +10,7 @@ $(".backButt").click(function () {
   load_commit();
 });
 
+//Login clic
 $(".loginButt").click(function () {
   user_id = $(".login_view input").val();
   if (user_id) {
@@ -142,7 +143,7 @@ function clustering_check() {
 
 //Load a commit from Github
 function load_commit() {
-  fetch("http://localhost:3000/scraper/?commit_url=" + current_commit)
+  fetch("https://protected-hamlet-78090.herokuapp.com/scraper/?commit_url=" + current_commit)
     .then((response) => response.json())
     .then((response) => {
       var data = response["data"];
@@ -198,7 +199,7 @@ function load_commit() {
 
 //Load a commit labels
 function load_commit_labels () {
-  fetch("http://localhost:3000/labels?commit_url=" + current_commit + "&user_id=" + user_id)
+  fetch("https://protected-hamlet-78090.herokuapp.com/labels?commit_url=" + current_commit + "&user_id=" + user_id)
     .then((response) => response.json())
     .then((response) => {
       var data = response["data"][0];
@@ -229,7 +230,7 @@ function load_commit_labels () {
 
 //Load a commit clusters
 function load_commit_clusters () {
-  fetch("http://localhost:3000/clusters?commit_url=" + current_commit + "&user_id=" + user_id)
+  fetch("https://protected-hamlet-78090.herokuapp.com/clusters?commit_url=" + current_commit + "&user_id=" + user_id)
     .then((response) => response.json())
     .then((response) => {
       for (const cluster of response["data"]) {
@@ -268,7 +269,7 @@ function lines_template(file_num, line_num, code, type) {
 
 //Return commits that the user should label.
 function load_user_commits() {
-  fetch("http://localhost:3000/commits/"+ user_id)
+  fetch("https://protected-hamlet-78090.herokuapp.com/commits/"+ user_id)
     .then((response) => response.json())
     .then((data) => {
       commits = data["data"];
@@ -292,7 +293,7 @@ function load_user_commits() {
 
 //Save a commit labels & clusters.
 function save_label() {
-  fetch("http://localhost:3000/save_label", {
+  fetch("https://protected-hamlet-78090.herokuapp.com/save_label", {
     method: "post",
     headers: {
       'Accept': 'application/json',
