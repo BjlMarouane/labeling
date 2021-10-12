@@ -94,6 +94,11 @@ function default_inputs(){
   $("._bjA input").val('');
   $(".com-code").removeClass("clustering");
   $("button").removeClass("chosen");
+  if ($(".commitNum").html() == 1) {
+    $(".backButt").addClass("d-none");
+  } else {
+    $(".backButt").removeClass("d-none");
+  }
   activities = "";
   clusters = [];
 }
@@ -189,7 +194,7 @@ function load_commit() {
           });
         }
       });
-      $(".backButt").removeClass("d-none");
+      //$(".backButt").addClass("d-none");
       set_structure();
       if (is_labled()) {
         load_commit_labels();
