@@ -92,6 +92,7 @@ $(".buttons button").click(function () {
 function default_inputs(){
   $('#CheckPerfectif, #CheckAdaptif, #CheckCorrectif').prop('checked', false);
   $("._bjA input").val('');
+  $("._bjA").addClass("d-none");
   $(".com-code").removeClass("clustering");
   $("button").removeClass("chosen");
   if ($(".commitNum").html() == 1) {
