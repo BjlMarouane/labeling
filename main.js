@@ -4,6 +4,7 @@ var commits = [];
 var activities = "";
 var clusters = [];
 var errors = [];
+var url = (document.URL.indexOf("https") == -1) ? "http://localhost:3000" : "https://protected-hamlet-78090.herokuapp.com";
 
 $(".backButt").click(function () {
   current_commit = commits[parseInt($(".commitNum").html()) - 2]["commit_id"];
@@ -143,7 +144,7 @@ function clustering_check() {
 
 //Load a commit from Github
 function load_commit() {
-  fetch("https://protected-hamlet-78090.herokuapp.com/scraper/?commit_url=" + current_commit)
+  fetch(url + "/scraper/?commit_url=" + current_commit)
     .then((response) => response.json())
     .then((response) => {
       var data = response["data"];
@@ -189,6 +190,7 @@ function load_commit() {
         }
       });
       $(".backButt").removeClass("d-none");
+      set_structure();
       if (is_labled()) {
         load_commit_labels();
       } else {
@@ -199,7 +201,7 @@ function load_commit() {
 
 //Load a commit labels
 function load_commit_labels () {
-  fetch("https://protected-hamlet-78090.herokuapp.com/labels?commit_url=" + current_commit + "&user_id=" + user_id)
+  fetch(url + "/labels?commit_url=" + current_commit + "&user_id=" + user_id)
     .then((response) => response.json())
     .then((response) => {
       var data = response["data"][0];
@@ -230,7 +232,7 @@ function load_commit_labels () {
 
 //Load a commit clusters
 function load_commit_clusters () {
-  fetch("https://protected-hamlet-78090.herokuapp.com/clusters?commit_url=" + current_commit + "&user_id=" + user_id)
+  fetch(url + "/clusters?commit_url=" + current_commit + "&user_id=" + user_id)
     .then((response) => response.json())
     .then((response) => {
       for (const cluster of response["data"]) {
@@ -269,7 +271,7 @@ function lines_template(file_num, line_num, code, type) {
 
 //Return commits that the user should label.
 function load_user_commits() {
-  fetch("https://protected-hamlet-78090.herokuapp.com/commits/"+ user_id)
+  fetch(url + "/commits/"+ user_id)
     .then((response) => response.json())
     .then((data) => {
       commits = data["data"];
@@ -293,7 +295,7 @@ function load_user_commits() {
 
 //Save a commit labels & clusters.
 function save_label() {
-  fetch("https://protected-hamlet-78090.herokuapp.com/save_label", {
+  fetch(url + "/save_label", {
     method: "post",
     headers: {
       'Accept': 'application/json',
@@ -345,3 +347,37 @@ $('.com-code').on('click', '.clusters_popup span', function () {
   $(this).parent().addClass("d-none");
   $(lines).removeClass("ui-selected")
 });
+
+
+$(".structureButt").click(function () {
+  $(".structure").modal("show");
+  set_structure();
+});
+
+function set_structure() {
+  $(".structure .modal-body").html("");
+  var paths = [];
+  $(".com-code .code").each(function (j) {
+    var file_path = $(this).find(".fileName span:nth-child(2)").html();
+    paths.push(file_path.split("/"));
+  });
+  
+  for (const [i, path] of paths.entries()) {
+    var full_path = "";
+    for (const [j, name] of path.entries()) {
+      var is_file = (j + 1) == path.length;
+      var parent = $(".structure div[data-path='" + full_path + "']");;
+      full_path += "/" + name
+      var check = $(".structure div[data-path='" + full_path + "']");
+      var location = ($(check).length == 0 && j == 0) ? $(".structure .modal-body") : $(parent);
+
+      if ($(check).length != 0 && is_file == false) { continue;}
+      add_RepoFile(location, full_path, name, is_file);
+    }
+  }
+}
+
+function add_RepoFile(location, full_path, name, is_file) {
+  var content = (is_file)? "<h4>"+ name + "</h4>" : "<div data-path='"+ full_path +"' >" + "<span>" + name + "</span>" + "</div>";
+  $(location).append(content);
+}

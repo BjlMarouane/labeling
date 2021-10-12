@@ -355,7 +355,7 @@ table{
     font-family: monospace;
 }
 
-.modal-body{
+.errors .modal-body{
     display: grid;
     list-style-type: circle;
     padding: 31px 55px 20px 70px;
@@ -440,4 +440,46 @@ ul.modal-body li {
     border: none;
     color: white;
     font-family: monospace;
+}
+
+.structure .modal-body{
+    padding: 25px 0px;
+}
+
+
+.structure .modal-body div {
+    position: relative;
+    margin-left: 10%;
+    width: 500px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.structure .modal-content{
+    background-color: #e8eef3;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+.structure h4 {
+    margin: 3px 0 0 10%;
+    background-color: #b6d6f1;
+    padding: 3px 15px;
+    width: max-content;
+    border-radius: 5px;
+    font-size: 13px!important;
+}
+
+.structure span {
+    background-color: #90a8bd;
+    padding: 2px 15px 2px 15px;
+    border-radius: 5px;
+    width: max-content;
+    color: white;
+}
+
+.structure .modal-header{
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bolder;
 }
