@@ -38,7 +38,7 @@ body{
     font-weight: 500;
     width: 200px;
 }
-.project-name,.message{
+.description,.message{
     margin-left: 1.5%;
     font-weight: bold;
     border: 2px solid #d4d1d1;
@@ -251,11 +251,11 @@ tr{
 }
 
 .add td:nth-child(3){
-    background-color: #e6ffec;
+    background-color: #c4ffd2;
 }
 
 .del td:nth-child(3){
-    background-color: #ffebe9;
+    background-color: #ffdeda;
 }
 
 .clustering tr:not(.noChange) td:first-child{
@@ -420,7 +420,7 @@ ul.modal-body li {
     background-color: #f5f5bf;
 }
 
-.com-infos a{
+.com-infos .github_link{
     position: absolute;
     top: calc(50% - 25px);
     right: 0%;
@@ -433,8 +433,8 @@ ul.modal-body li {
 }
 
 .structureButt{
-    margin-left: 30px;
-    padding: 4px 17px;
+    margin-left: 15px;
+    padding: 3px 15px;
     border-radius: 12px;
     background-color: #415bbbb3;
     border: none;
@@ -483,3 +483,30 @@ ul.modal-body li {
     font-size: 15px;
     font-weight: bolder;
 }
+
+.link {
+    border: none;
+    padding: 5px 14px;
+    margin-left: 15px;
+    color: #6a3c3c;
+    font-weight: 600;
+    border-radius: 12px;
+    font-family: monospace;
+}
+
+a.link.issue_link {
+    background-color: #ff8080;
+}
+
+a.link.pull_link {
+    background-color: #3ff985;
+}
+
+.file_link{
+    color: #403f3f;
+}
+
+.codeHeader{
+    background: #b3b3b338;
+}
+

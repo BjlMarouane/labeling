@@ -32,6 +32,7 @@ $(".tangButt").click(function () {
 $(".skipButt, .atomButt").click(function () {
   $("._bjA").addClass("d-none");
   $(".com-code").removeClass("clustering");
+  $(".clusters_popup").addClass("d-none");
 });
 
 //Clic sur Valider
@@ -154,8 +155,9 @@ function load_commit() {
     .then((response) => response.json())
     .then((response) => {
       var data = response["data"];
-      $(".project-name").html(data["project"]);
-      $(".message").html(data["message"]);
+      set_commit_infos();
+      //$(".project-name").html(data["project"]);
+      //$(".message").html(data["message"]);
 
       $("#temp").html(data["files"]);
       //$(".js-expandable-line").remove();
@@ -164,8 +166,9 @@ function load_commit() {
         var file = $(this);
         var file_id = $(file).attr('id');
         $(".com-code").append(file_template((i + 1) ,file_id));
-        $(".com-code .code[data-fileId=" + file_id + "] .fileName span:nth-child(2)").html($(file).find(".file-header").attr("data-path"));
-
+        $(".com-code .code[data-fileId=" + file_id + "] .file_link").html($(file).find(".file-header").attr("data-path"));
+        $(".com-code .code[data-fileId=" + file_id + "] .fileName a").attr('href', "https://www.github.com" +  $(file).find("a.dropdown-item.btn-link").attr("href"));
+        
         $(file).find("tbody tr").each(function (j) {
           var line = $(this);
           if ($(line).attr("data-hunk")) {
@@ -179,10 +182,12 @@ function load_commit() {
             }
             code.replace(/<[^>]+>/g, '');
             $(".code[data-fileId=" + file_id + "] table").append(lines_template((i + 1), line_num, code, type));
+          } else {
+            $(".code[data-fileId=" + file_id + "] table").append(code_header($(line).find(".blob-code-inner").html()));
           }
         });
       });
-      $(".com-infos a").attr('href', current_commit)
+      $(".github_link").attr('href', current_commit)
       $(".changes .selectable").selectable({
         stop: function () {
           var popup = $(this).closest(".code").find(".clusters_popup");
@@ -255,7 +260,7 @@ function load_commit_clusters () {
 //Return HTML file
 function file_template(index, file_id) {
   var html_file = '<div class="row code" data-fileID="'+ file_id +'">' +
-                      '<div class="fileName"><span>File '+ index + ' >> </span><span></span></div>' +
+                      '<div class="fileName"><a href="" target="_blank"><span>File '+ index + ' >> </span><span class="file_link"></span></div></a>' +
                       '<div class="changes">' +
                         '<table><tbody class="selectable"></tbody></table>' +
                       '</div>' +
@@ -275,6 +280,15 @@ function lines_template(file_num, line_num, code, type) {
           '</tr>';
 }
 
+function code_header(content) {
+  return '<tr class="codeHeader noChange">' +
+            '<td class="cluster_num">?</td>' +
+            '<td></td>' +
+            '<td>' + content +'</td>' +
+          '</tr>';
+}
+
+
 //Return commits that the user should label.
 function load_user_commits() {
   fetch(url + "/commits/"+ user_id)
@@ -282,22 +296,40 @@ function load_user_commits() {
     .then((data) => {
       commits = data["data"];
       if (commits.length) {
-        for (const [index, c] of commits.entries()) {
-          if (c["type"] == null) {
-            current_commit = c["commit_id"];
-            $(".commitNum").html(index + 1);
-            $(".TotalCom").html(commits.length)
-            break;
+        if (commits[commits.length - 1]["type"]) {
+          alert("You finished all the commits, Thank you for your time");
+        } else {
+          for (const [index, c] of commits.entries()) {
+            if (!c["type"]) {
+              current_commit = c["commit_id"];
+              $(".commitNum").html(index + 1);
+              $(".TotalCom").html(commits.length)
+              break;
+            }
           }
+          load_commit();
+          $(".login_view").addClass("d-none");
+          $(".mycontainer").removeClass("d-none");
         }
-        load_commit();
-        $(".login_view").addClass("d-none");
-        $(".mycontainer").removeClass("d-none");
       } else {
-        alert("No data is available for this username.");
+        alert("Usernane not found.");
       }
     });
 }
+
+//Set commit infos
+function set_commit_infos() {
+  fetch(url + "/commit?commit_id=" + current_commit)
+    .then((response) => response.json())
+    .then((data) => {
+      commit = data["data"];
+      $('.message').html(commit[0]['message']);
+      (commit[0]['description']) ? $('.description').html(commit[0]['description']) : $('.description').html("-");
+      (commit[0]['issue']) ? $('.issue_link').attr("href", commit[0]['issue']) : $('.issue_link').addClass("d-none");
+      (commit[0]['pull']) ? $('.pull_link').attr("href", commit[0]['pull']).removeClass("d-none") : $('.pull_link').addClass("d-none");
+    });
+}
+
 
 //Save a commit labels & clusters.
 function save_label() {
@@ -324,7 +356,7 @@ function save_label() {
         current_commit = commits[index]["commit_id"];
         load_commit();
       } else {
-        alert("END");
+        window.location.reload();
       }
    });
 }
@@ -364,7 +396,7 @@ function set_structure() {
   $(".structure .modal-body").html("");
   var paths = [];
   $(".com-code .code").each(function (j) {
-    var file_path = $(this).find(".fileName span:nth-child(2)").html();
+    var file_path = $(this).find(".file_link").html();
     paths.push(file_path.split("/"));
   });
   
