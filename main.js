@@ -108,7 +108,7 @@ function default_inputs(){
 //Tangled label verification
 function clustering_check() {
   clusters = [];
-  $("._bjA > div").each(function (i) {
+  $("._bjA .cls-desc").each(function (i) {
     var cluster = { "number": (i + 1), "lines": "", "description": $(this).find("input").val() };
     clusters.push(cluster);
   });
@@ -119,31 +119,30 @@ function clustering_check() {
         var line = $(this).attr("data-line") + ",";
         var cluster_num = $(this).find(".cluster_num").html();
         if (cluster_num == "?") {
-          errors = ["Chaque ligne doit apparteninr à un cluster."]
+          errors = ["Chaque ligne doit avoir un identifiant."]
           return false;
         }
         var index = clusters.findIndex(x => x.number == cluster_num);
         clusters[index]['lines'] += line;
-        
       }
     });
   });
   
-  var final_clusters = []
+  var final_clusters = [];
   for (const [index, c] of clusters.entries()) {
     if (c["lines"] == "" && c["description"] == "") {
       continue;
     } else {
       if (c["lines"] && c["description"] == "") {
-        errors.push("Le cluster " + c["number"] + " nécessite une description.");
+        errors.push("L'identifiant " + c["number"] + " nécessite une description.");
       } else if (c["description"] && c["lines"] == "") {
-        errors.push("Le cluster " + c["number"] + " ne comprend aucune ligne.");
+        errors.push("L'identifiant " + c["number"] + " ne comprend aucune ligne.");
       } 
       final_clusters.push(c);  
     }
   }
   if (final_clusters.length < 2) {
-    errors.push("Un commit enchevêtré doit contenir au moins 2 clusters.");
+    errors.push("Un commit enchevêtré doit être séparé au moins en deux.");
   }
   clusters = final_clusters;
   return (errors.length)? false : true;
@@ -190,18 +189,20 @@ function load_commit() {
       $(".github_link").attr('href', current_commit)
       $(".changes .selectable").selectable({
         stop: function () {
-          var popup = $(this).closest(".code").find(".clusters_popup");
-          $(popup).addClass("d-none");
-          $(this).find("tr").each(function (j) {
-            if ($(this).hasClass("ui-selected") && !$(this).hasClass("noChange")) {
-              $(popup).removeClass("d-none");
-              return false;
-            }
-          });
+          if ($(".com-code").hasClass("clustering")) {
+            var popup = $(this).closest(".code").find(".clusters_popup");
+            $(popup).addClass("d-none");
+            $(this).find("tr").each(function (j) {
+              if ($(this).hasClass("ui-selected") && !$(this).hasClass("noChange")) {
+                $(popup).removeClass("d-none");
+                return false;
+              }
+            });
+          }
         }
       });
-      //$(".backButt").addClass("d-none");
       set_structure();
+      $(".cls_added").remove();
       if (is_labled()) {
         load_commit_labels();
       } else {
@@ -288,7 +289,6 @@ function code_header(content) {
           '</tr>';
 }
 
-
 //Return commits that the user should label.
 function load_user_commits() {
   fetch(url + "/commits/"+ user_id)
@@ -329,7 +329,6 @@ function set_commit_infos() {
       (commit[0]['pull']) ? $('.pull_link').attr("href", commit[0]['pull']).removeClass("d-none") : $('.pull_link').addClass("d-none");
     });
 }
-
 
 //Save a commit labels & clusters.
 function save_label() {
@@ -380,12 +379,12 @@ $('.com-code').on('click', '.clusters_popup span', function () {
   $(lines).each(function (index) {
     if ($(this).hasClass("ui-selected")) {
       $(this).find(".cluster_num").html(value);
+      $(this).find(".cluster_num").addClass("done")
     }
   });
   $(this).parent().addClass("d-none");
   $(lines).removeClass("ui-selected")
 });
-
 
 $(".structureButt").click(function () {
   $(".structure").modal("show");
@@ -419,3 +418,10 @@ function add_RepoFile(location, full_path, name, is_file) {
   var content = (is_file)? "<h4>"+ name + "</h4>" : "<div data-path='"+ full_path +"' >" + "<span>" + name + "</span>" + "</div>";
   $(location).append(content);
 }
+
+//Add new cluster
+$(".add_cls").click(function () {
+  var num = parseInt($(this).prev("div").find("input").attr("data-cluster")) + 1;
+  $("<div class='cls-desc cls_added'><label>" + num + ") </label> <input type='text' data-cluster='" + num + "'/></div>").insertBefore(this);
+  $(".clusters_popup").append("<span>" + num + "</span>");
+});

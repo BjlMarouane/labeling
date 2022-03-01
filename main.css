@@ -15,7 +15,7 @@ body{
 .com-infos{
     background-color: rgb(246, 246, 238);
     border-bottom: 3px solid #d4d4d4;
-    height: 120px;
+    min-height: 120px;
     width: calc(100% + 15px);
     padding: 0 90px;
 }
@@ -38,12 +38,22 @@ body{
     font-weight: 500;
     width: 200px;
 }
-.description,.message{
+.message{
     margin-left: 1.5%;
     font-weight: bold;
     border: 2px solid #d4d1d1;
     border-radius: 5px;
     padding: 4px 20px;
+}
+
+.desc-div{
+    width: 95%;
+    line-height: 25px;
+}
+
+.description{
+    margin-left: 1.5%;
+    font-weight: bold;
 }
 .com-infos .col > div{
     margin: 24px 0;
@@ -258,10 +268,14 @@ tr{
     background-color: #ffdeda;
 }
 
+.cluster_num.done{
+    background-color: #f9fb534a!important;
+}
+
 .clustering tr:not(.noChange) td:first-child{
     text-align: center;
     cursor: pointer;
-    background-color: #feffb1;
+    background-color: #f9fb53;
     font-weight: bolder;
     border: 1px solid #c2c2cb;
     border-left: none;
@@ -411,7 +425,7 @@ ul.modal-body li {
     border-top-right-radius: 9px;
 }
 
-.clusters_popup span:nth-child(4){
+.clusters_popup span:last-child{
     border-bottom-left-radius: 9px;
     border-bottom-right-radius: 9px;
 }
@@ -423,7 +437,7 @@ ul.modal-body li {
 .com-infos .github_link{
     position: absolute;
     top: calc(50% - 25px);
-    right: 0%;
+    right: -50px;
     font-size: 13px;
     background-color: #4a4a4a;
     padding: 15px 15px;
@@ -510,3 +524,15 @@ a.link.pull_link {
     background: #b3b3b338;
 }
 
+.add_cls{
+    border: 1px solid #b3b3ef;
+    background-color: #dadaf7;
+    width: 15%;
+    height: 37px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    margin-left: 44%!important;
+    color: #5959c3;
+    cursor: pointer;
+}
