@@ -89,7 +89,7 @@ $(".buttons button").click(function () {
   $(this).addClass("chosen");
 });
 
-//init inputs with the default values
+//Init inputs with the default values
 function default_inputs(){
   $('#CheckPerfectif, #CheckAdaptif, #CheckCorrectif').prop('checked', false);
   $("._bjA input").val('');
