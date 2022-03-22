@@ -12,6 +12,17 @@
       <button class="loginButt">LOGIN</button>
     </div>
     <div class="mycontainer d-none">
+      <div class="row search-bar">
+        <div class="col">
+          <input type="text" placeholder="Commit URL"> 
+          <select>
+            <option>All</option>
+            <option>B</option>
+            <option>C</option>
+          </select>
+          <button>Search</button>
+        </div>
+      </div>
       <div class="row com-infos">
         <div class="col">
 
@@ -94,6 +105,42 @@
       </div>
     </div>
     <div id="temp" class="d-none"></div>
+
+    <div class="admin_view d-none">    
+      <div>
+        <table class="table-stats atm">
+          <tbody>
+            <tr>
+              <th colspan="2" class="tbl-header">Mon étiquetage:  <span>100 / 2100</span></th>
+            </tr>
+            <tr>
+              <th width="50%">Atomique</th>
+              <th>Enchevêtré</th>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table-stats am">
+          <tbody>
+            <tr>
+              <th width="33%">Perfectif</th>
+              <th width="33%">Adaptatif</th>
+              <th width="33%">Correctif</th>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="txt-stats">Nbre de commits étiquetés par les participants: <span>150 /4500</span> </div> 
+        <div class="txt-stats">Nbre de commits à revérifier:  <button class="check-commits">150</button> </div>
+      </div>
+    </div>
     
     <!-- Modal: Errors -->
     <div class="modal errors fade " tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

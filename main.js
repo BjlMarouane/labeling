@@ -325,7 +325,7 @@ function set_commit_infos() {
       commit = data["data"];
       $('.message').html(commit[0]['message']);
       (commit[0]['description']) ? $('.description').html(commit[0]['description']) : $('.description').html("-");
-      (commit[0]['issue']) ? $('.issue_link').attr("href", commit[0]['issue']) : $('.issue_link').addClass("d-none");
+      (commit[0]['issue']) ? $('.issue_link').attr("href", commit[0]['issue']).removeClass("d-none") : $('.issue_link').addClass("d-none");
       (commit[0]['pull']) ? $('.pull_link').attr("href", commit[0]['pull']).removeClass("d-none") : $('.pull_link').addClass("d-none");
     });
 }
