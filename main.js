@@ -4,6 +4,8 @@ var commits = [];
 var activities = "";
 var clusters = [];
 var errors = [];
+var their_labels = [];
+var my_labels = [];
 var url = (document.URL.indexOf("https") == -1) ? "http://localhost:3000" : "https://protected-hamlet-78090.herokuapp.com";
 
 $(".backButt").click(function () {
@@ -15,7 +17,7 @@ $(".backButt").click(function () {
 $(".loginButt").click(function () {
   user_id = $(".login_view input").val();
   if (user_id) {
-    load_user_commits();
+    check_isAdmin();
   } else {
     alert("Champ manquant: Username.");
   }
@@ -88,6 +90,155 @@ $(".buttons button").click(function () {
   $(".buttons button").removeClass("chosen");
   $(this).addClass("chosen");
 });
+
+function check_isAdmin() {
+  fetch(url + "/is_admin/"+ user_id)
+  .then((response) => response.json())
+    .then((data) => {
+      if (data["is_admin"]) {
+        load_admin_page();
+      } else {
+        load_user_commits();
+      }
+  });
+}
+
+function load_admin_page() {
+  $(".login_view").addClass("d-none");
+  $(".admin_view").removeClass("d-none");
+  
+  fetch(url + "/stats/" + user_id + "/" + user_id)
+    .then((response) => response.json())
+    .then((data) => {
+      const my_commits = data['data'];
+      my_labels = my_commits.filter(commit => {
+        return commit.type;
+      });
+      const percent = ((my_labels.length * 100) / my_commits.length).toFixed(1);
+      $(".my-total").html(my_labels.length + " / " + my_commits.length);
+
+      const labels = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //[atomic, tangled, A, C, P, CA, PA, PC, PCA]
+      for (const [index, c] of my_labels.entries()) {
+        if (c["type"] == "atomic") {
+          ++labels[0];
+        } else if (c["type"] == "tangled") {
+          ++labels[1];
+        } else {
+          ++labels[2];
+        }
+        switch(c["activities"]) {
+          case "perfectif,correctif,adaptif":
+            ++labels[9];
+            break;
+          case "perfectif,correctif,":
+            ++labels[8];
+            break;
+          case "perfectif,adaptif":
+            ++labels[7];
+            break;
+          case "correctif,adaptif":
+            ++labels[6];
+            break;
+          case "perfectif,":
+            ++labels[5];
+            break;
+          case "correctif,":
+            ++labels[4];
+            break;
+          case "adaptif":
+            ++labels[3];
+            break;
+          default:
+          // code block
+        }
+      }
+
+      $(".my-atomic").html(labels[0] + " <span class='percent'>  (" + ((labels[0] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-tangled").html(labels[1] + " <span class='percent'>  (" + ((labels[1] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-difficult").html(labels[2] + " <span class='percent'>  (" + ((labels[2] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-adap").html(labels[3] + " <span class='percent'>  (" + ((labels[3] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-corr").html(labels[4] + " <span class='percent'>  (" + ((labels[4] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-perf").html(labels[5] + " <span class='percent'>  ("+ ((labels[5] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-adap-corr").html(labels[6] + " <span class='percent'>  (" + ((labels[6] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-perf-adap").html(labels[7] + " <span class='percent'>  (" + ((labels[7] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-corr-perf").html(labels[8] + " <span class='percent'>  (" + ((labels[8] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+      $(".my-corr-adap-perf").html(labels[9] + " <span class='percent'>  (" + ((labels[9] * 100) / my_labels.length).toFixed(1) + " %) </span>");
+
+      show_conflits();
+    });
+}
+
+function show_conflits() {
+  fetch(url + "/stats/" + user_id + "/all")
+    .then((response) => response.json())
+    .then((data) => {
+      const len = data['data'].length;
+      their_labels = data['data'].filter(commit => {
+        return commit.type;
+      });
+      $(".participants").html(their_labels.length + " / " + len);
+
+      var compared = 0;
+      var conflits = [0, 0, 0, 0, 0]; //[A1, AM1, A2, AM2. AM3 ]
+      for (const [index, c] of my_labels.entries()) {
+        var two_commits = their_labels.filter(commit => {
+          return commit.commit_id == c.commit_id;
+        });
+        if (two_commits.length == 2) {
+          //Cas 1
+          (two_commits[0]['type'] != two_commits[1]['type'] && (c['type'] == two_commits[0]['type'] || c['type'] == two_commits[1]['type'])) ? ++conflits[0] : "";
+          (two_commits[0]['activities'] != two_commits[1]['activities'] && (c['activities'] == two_commits[0]['activities'] || c['activities'] == two_commits[1]['activities'])) ? ++conflits[1] : "";
+
+          //Cas 2
+          (two_commits[0]['type'] == two_commits[1]['type'] && c['type'] != two_commits[0]['type']) ? ++conflits[2] : "";
+          (two_commits[0]['activities'] == two_commits[1]['activities'] && c['activities'] != two_commits[0]['activities']) ? ++conflits[3] : "";
+          
+          //Cas 3
+          (c['activities'] != two_commits[0]['activities'] && c['activities'] != two_commits[1]['activities'] && two_commits[0]['activities'] != two_commits[1]['activities']) ? ++conflits[4] : "";          
+      
+          ++compared;
+        }
+      }
+      $(".diff1-atc span").html(conflits[0] + " / " + compared + " (" + (conflits[0] * 100 / compared).toFixed(1) + "%)");
+      $(".diff1-am span").html(conflits[1] + " / " + compared + " (" + (conflits[1] * 100 / compared).toFixed(1) + "%)");
+      $(".diff2-atc span").html(conflits[2] + " / " + compared + " (" + (conflits[2] * 100 / compared).toFixed(1) + "%)");
+      $(".diff2-am span").html(conflits[3] + " / " + compared + " (" + (conflits[3] * 100 / compared).toFixed(1) + "%)");
+      $(".diff3-am span").html(conflits[4] + " / " + compared + " (" + (conflits[4] * 100 / compared).toFixed(1) + "%)");
+
+      conflits_by_participants();
+
+    });
+}
+
+function conflits_by_participants() {
+  fetch(url + "/users/" + user_id)
+    .then((response) => response.json())
+    .then((data) => {
+      var users = data['data'];
+      for (const [i, user] of users.entries()) {
+        var conflits = [0, 0]; //[atomicite, AM]
+        var his_commits = their_labels.filter(commit => {
+          return commit.user_id == user["user_id"];
+        });
+        var compared = 0;
+        for (const [j, c] of his_commits.entries()) {
+          const my_commit = my_labels.filter(commit => {
+            return commit.commit_id == c["commit_id"];
+          });
+          if (my_commit.length) {
+            (my_commit[0]["type"] != c["type"]) ? ++conflits[0] : "";
+            (my_commit[0]["activities"] != c["activities"]) ? ++conflits[1] : "";
+            ++compared;
+          }
+        }
+        const val1 = conflits[0] + "/" + compared + " (" + (conflits[0] * 100 / compared).toFixed(1) + "%)";
+        const val2 = conflits[1] + "/" + compared + " (" + (conflits[1] * 100 / compared).toFixed(1) + "%)";
+
+        $(".diff-participants").append("<tr id='" + user["user_id"] + "'><td>" + user["name"] + "</td><td>" + his_commits.length + "</td><td>" + val1 + "</td><td>" + val2 + "</td></tr>")
+      }
+    });
+}
+
 
 //Init inputs with the default values
 function default_inputs(){

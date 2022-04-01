@@ -111,15 +111,17 @@
         <table class="table-stats atm">
           <tbody>
             <tr>
-              <th colspan="2" class="tbl-header">Mon étiquetage:  <span>100 / 2100</span></th>
+              <th colspan="3" class="tbl-header">Mon étiquetage:  <span class="my-total"></span></th>
             </tr>
             <tr>
-              <th width="50%">Atomique</th>
-              <th>Enchevêtré</th>
+              <th width="33.33%">Atomique</th>
+              <th width="33.33%">Enchevêtré</th>
+              <th>Difficile à juger</th>
             </tr>
             <tr>
-              <td>0</td>
-              <td>0</td>
+              <td class="my-atomic"></td>
+              <td class="my-tangled"></td>
+              <td class="my-difficult"></td>
             </tr>
           </tbody>
         </table>
@@ -131,14 +133,57 @@
               <th width="33%">Correctif</th>
             </tr>
             <tr>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
+              <td class="my-perf"></td>
+              <td class="my-adap"></td>
+              <td class="my-corr"></td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <th width="33%">Perfectif et correctif</th>
+              <th width="33%">Perfectif et adaptatif</th>
+              <th width="33%">Correctif et adaptatif</th>
+            </tr>
+            <tr>
+              <td class="my-corr-perf"></td>
+              <td class="my-perf-adap"></td>
+              <td class="my-adap-corr"></td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <th colspan="3">Perfectif, correctif et adaptatif</th>
+            </tr>
+            <tr>
+              <td colspan="3" class="my-corr-adap-perf"></td>
             </tr>
           </tbody>
         </table>
-        <div class="txt-stats">Nbre de commits étiquetés par les participants: <span>150 /4500</span> </div> 
-        <div class="txt-stats">Nbre de commits à revérifier:  <button class="check-commits">150</button> </div>
+        <div class="txt-stats">Nbre de commits étiquetés par les étudiants: <button class="participants" disabled></button> </div> 
+        <div class="txt-stats">
+           <h3>--- Désaccord entre les 3 étiquetages si on considère que:  ---</h3>
+           <span>L'un des deux étudiants ne partage pas le même étiquetage que moi </span> <br>
+           <button class="diff1-atc" disabled>Atomicité: <span></span></button>
+           <button class="diff1-am" disabled>AM: <span></span> </button><br>
+           <span>Les deux étudiants ont le même étiquetage qui diffère du mien </span><br>
+           <button class="diff2-atc" disabled>Atomicité: <span></span></button>
+           <button class="diff2-am" disabled>AM: <span></span> </button><br>
+           <span>Nos trois étiquetages sont différents</span><br>
+           <button class="diff3-am" disabled>AM: <span></span> </button><br>
+
+           <h3>--- Désaccord par rapport à chaque étudiant ---</h3>
+           <table class="table-stats diff-participants">
+            <tbody>
+              <tr>
+                <th>Etudiant</th>
+                <th width="20%">Commits étiquetés</th>
+                <th width="25%">Atomicité</th>
+                <th width="25%">AM</th>
+              </tr>
+            </tbody>
+          </table>
+           <!-- <button class="check-commits">Valider</button>  -->
+          </div>
       </div>
     </div>
     

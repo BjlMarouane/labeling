@@ -554,14 +554,20 @@ a.link.pull_link {
 
 .table-stats {
     text-align: center;
-    width: 50%;
+    width: 80%;
+    max-width: 900px;
     margin: auto;
 }
 
 .table-stats .tbl-header {
     background-color: #100a0ec7;
     height: 60px;
-    font-size: 22px;
+    font-size: 17px;
+}
+
+.percent {
+    color: #e37312;
+    font-size: 15px;
 }
 
 .table-stats th {
@@ -571,32 +577,61 @@ a.link.pull_link {
 }
 
 .table-stats th, .table-stats td {
-    border: 2px solid #fff3f3;
-    font-size: 16px;
+    border: 2px solid #7c6c6c;
+    font-size: 12px;
     font-weight: bolder;
-    font-family: revert;
+    font-family: inherit;
 }
 
 table.table-stats.am {
     margin-bottom: 4%;
+    border-top: 15px solid #e5e5ff;
+}
+
+.check-commits {
+    border-radius: 8px!important;
+    padding: 9px 22px!important;
+    font-size: 14px;
+    background-color: #6ff3bc!important;
 }
 
 .txt-stats {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 600;
     font-family: system-ui;
-    margin-bottom: 25px;
-    margin-left: 25%;
+    text-align: center;
 }
 
-.txt-stats button, .txt-stats span {
-    padding: 6px 50px;
+.txt-stats h3 {
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+.participants{
+    background-color: #9eedae!important;
+}
+
+.table-stats.diff-participants td{
+    font-size: 15px;
+}
+
+.txt-stats > span {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.txt-stats button{
+    padding: 5px 50px;
     border-radius: 20px;
     border: none;
     background-color: #feb16e;
     font-weight: bold;
     margin-left: 20px;
     color: #444444;
+    margin-bottom: 40px;
+    font-size: 14px;
 }
 
 .table-stats td {
