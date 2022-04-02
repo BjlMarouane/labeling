@@ -260,7 +260,10 @@ function default_inputs(){
 function clustering_check() {
   clusters = [];
   $("._bjA .cls-desc").each(function (i) {
-    var cluster = { "number": (i + 1), "lines": "", "description": $(this).find("input").val() };
+    var desc = $(this).find("input").val();
+    desc = desc.replace('"', "‘");
+    desc = desc.replace("'", "‘");
+    var cluster = { "number": (i + 1), "lines": "", "description": desc};
     clusters.push(cluster);
   });
 
