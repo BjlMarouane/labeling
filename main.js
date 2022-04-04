@@ -184,7 +184,8 @@ function show_conflits() {
         var two_commits = their_labels.filter(commit => {
           return commit.commit_id == c.commit_id;
         });
-        if (two_commits.length == 2 && c["type"] != "unknown" && c["activities"] != "perfectif,correctif,adaptif") {
+        
+        if (two_commits.length == 2 && c["type"] != "unknown" && c["activities"] != "perfectif,correctif,adaptif") { //it means do not incule those labels in stats
           //Cas 1
           (two_commits[0]['type'] != two_commits[1]['type'] && (c['type'] == two_commits[0]['type'] || c['type'] == two_commits[1]['type'])) ? ++conflits[0] : "";
           (two_commits[0]['activities'] != two_commits[1]['activities'] && (c['activities'] == two_commits[0]['activities'] || c['activities'] == two_commits[1]['activities'])) ? ++conflits[1] : "";
@@ -206,8 +207,38 @@ function show_conflits() {
       $(".diff3-am span").html(conflits[4] + " / " + compared + " (" + (conflits[4] * 100 / compared).toFixed(1) + "%)");
 
       conflits_by_participants();
-
+      conflits_by_labels();
     });
+}
+
+function conflits_by_labels() {
+  var tab = [];
+  var disagreements = 0;
+  for (const [index, c] of their_labels.entries()) {
+    var mine = my_labels.filter(commit => {
+      return commit.commit_id == c.commit_id;
+    })[0];
+    if (c["activities"] != mine["activities"]) {
+      const cas = mine["activities"] + "  >>>  " + c["activities"];
+      const index = tab.findIndex(x => x.cas === cas);
+      if ( mine["type"] != "unknown" && mine["activities"] != "perfectif,correctif,adaptif") { //it means do not incule those labels in stats
+        if (index != -1) {
+          ++tab[index]["occurence"];
+        } else {
+          tab.push({"cas": cas, "occurence": 1 });
+        }
+        ++disagreements;
+      }
+    }
+  }
+  
+  tab.sort((a, b) => b.occurence - a.occurence);
+
+  for (const [index, cas] of tab.entries()) {
+    temp += cas["occurence"];
+    $(".diff-labels").append("<tr><td>" + cas["cas"] + "</td><td>" + cas["occurence"] + " (" + (cas["occurence"] * 100 / disagreements).toFixed(1) + " %) " + "</td></tr>");
+  }
+  alert("labels => " + disagreements);
 }
 
 function conflits_by_participants() {
@@ -215,6 +246,7 @@ function conflits_by_participants() {
     .then((response) => response.json())
     .then((data) => {
       var users = data['data'];
+      var temp = 0;
       for (const [i, user] of users.entries()) {
         var conflits = [0, 0]; //[atomicite, AM]
         var his_commits = their_labels.filter(commit => {
@@ -224,18 +256,21 @@ function conflits_by_participants() {
         for (const [j, c] of his_commits.entries()) {
           const my_commit = my_labels.filter(commit => {
             return commit.commit_id == c["commit_id"];
-          });
-          if (my_commit.length && my_commit["type"] != "unknown" && my_commit["activities"] != "perfectif,correctif,adaptif") {
-            (my_commit[0]["type"] != c["type"]) ? ++conflits[0] : "";
-            (my_commit[0]["activities"] != c["activities"]) ? ++conflits[1] : "";
+          })[0];
+          if (my_commit["type"] != "unknown" && my_commit["activities"] != "perfectif,correctif,adaptif") {
+            (my_commit["type"] != c["type"]) ? ++conflits[0] : "";
+            (my_commit["activities"] != c["activities"]) ? ++conflits[1] : "";
             ++compared;
           }
         }
         const val1 = conflits[0] + "/" + compared + " (" + (conflits[0] * 100 / compared).toFixed(1) + "%)";
         const val2 = conflits[1] + "/" + compared + " (" + (conflits[1] * 100 / compared).toFixed(1) + "%)";
 
-        $(".diff-participants").append("<tr id='" + user["user_id"] + "'><td>" + user["name"] + "</td><td>" + his_commits.length + "</td><td>" + val1 + "</td><td>" + val2 + "</td></tr>")
+        $(".diff-participants").append("<tr id='" + user["user_id"] + "'><td>" + user["name"] + "</td><td>" + his_commits.length + "</td><td>" + val1 + "</td><td>" + val2 + "</td></tr>");
+
+        temp += conflits[1];
       }
+      alert("etudiants => " + temp);
     });
 }
 
