@@ -179,12 +179,12 @@ function show_conflits() {
       $(".participants").html(their_labels.length + " / " + len);
 
       var compared = 0;
-      var conflits = [0, 0, 0, 0, 0]; //[A1, AM1, A2, AM2. AM3 ]
+      var conflits = [0, 0, 0, 0, 0]; //[A1, AM1, A2, AM2. AM3]
       for (const [index, c] of my_labels.entries()) {
         var two_commits = their_labels.filter(commit => {
           return commit.commit_id == c.commit_id;
         });
-        if (two_commits.length == 2) {
+        if (two_commits.length == 2 && c["type"] != "unknown" && c["activities"] != "perfectif,correctif,adaptif") {
           //Cas 1
           (two_commits[0]['type'] != two_commits[1]['type'] && (c['type'] == two_commits[0]['type'] || c['type'] == two_commits[1]['type'])) ? ++conflits[0] : "";
           (two_commits[0]['activities'] != two_commits[1]['activities'] && (c['activities'] == two_commits[0]['activities'] || c['activities'] == two_commits[1]['activities'])) ? ++conflits[1] : "";
@@ -225,7 +225,7 @@ function conflits_by_participants() {
           const my_commit = my_labels.filter(commit => {
             return commit.commit_id == c["commit_id"];
           });
-          if (my_commit.length) {
+          if (my_commit.length && my_commit["type"] != "unknown" && my_commit["activities"] != "perfectif,correctif,adaptif") {
             (my_commit[0]["type"] != c["type"]) ? ++conflits[0] : "";
             (my_commit[0]["activities"] != c["activities"]) ? ++conflits[1] : "";
             ++compared;
