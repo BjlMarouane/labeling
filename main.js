@@ -238,7 +238,6 @@ function conflits_by_labels() {
     temp += cas["occurence"];
     $(".diff-labels").append("<tr><td>" + cas["cas"] + "</td><td>" + cas["occurence"] + " (" + (cas["occurence"] * 100 / disagreements).toFixed(1) + " %) " + "</td></tr>");
   }
-  alert("labels => " + disagreements);
 }
 
 function conflits_by_participants() {
@@ -246,7 +245,6 @@ function conflits_by_participants() {
     .then((response) => response.json())
     .then((data) => {
       var users = data['data'];
-      var temp = 0;
       for (const [i, user] of users.entries()) {
         var conflits = [0, 0]; //[atomicite, AM]
         var his_commits = their_labels.filter(commit => {
@@ -270,7 +268,6 @@ function conflits_by_participants() {
 
         temp += conflits[1];
       }
-      alert("etudiants => " + temp);
     });
 }
 
