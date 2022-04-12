@@ -185,7 +185,7 @@ function show_conflits() {
           return commit.commit_id == c.commit_id;
         });
         
-        if (two_commits.length == 2 && c["type"] != "unknown" && c["activities"] != "perfectif,correctif,adaptif") { //it means do not incule those labels in stats
+        if (c["type"] != "unknown" && c["activities"] != "perfectif,correctif,adaptif") { //it means do not incule those labels in stats
           //Cas 1
           (two_commits[0]['type'] != two_commits[1]['type'] && (c['type'] == two_commits[0]['type'] || c['type'] == two_commits[1]['type'])) ? ++conflits[0] : "";
           (two_commits[0]['activities'] != two_commits[1]['activities'] && (c['activities'] == two_commits[0]['activities'] || c['activities'] == two_commits[1]['activities'])) ? ++conflits[1] : "";
@@ -193,10 +193,10 @@ function show_conflits() {
           //Cas 2
           (two_commits[0]['type'] == two_commits[1]['type'] && c['type'] != two_commits[0]['type']) ? ++conflits[2] : "";
           (two_commits[0]['activities'] == two_commits[1]['activities'] && c['activities'] != two_commits[0]['activities']) ? ++conflits[3] : "";
-          
+
           //Cas 3
           (c['activities'] != two_commits[0]['activities'] && c['activities'] != two_commits[1]['activities'] && two_commits[0]['activities'] != two_commits[1]['activities']) ? ++conflits[4] : "";          
-      
+          
           ++compared;
         }
       }
@@ -206,10 +206,74 @@ function show_conflits() {
       $(".diff2-am span").html(conflits[3] + " / " + compared + " (" + (conflits[3] * 100 / compared).toFixed(1) + "%)");
       $(".diff3-am span").html(conflits[4] + " / " + compared + " (" + (conflits[4] * 100 / compared).toFixed(1) + "%)");
 
+      conflits_ik();
       conflits_by_participants();
       conflits_by_labels();
     });
 }
+
+function get_cas(classe, two_commits, c) {
+    if (two_commits[0][classe] != two_commits[1][classe] && (c[classe] == two_commits[0][classe] || c[classe] == two_commits[1][classe])) { //Un étudiant pas d'accord 
+      return 0;
+    } else if (two_commits[0][classe] == two_commits[1][classe] && c[classe] != two_commits[0][classe]) { // deux étudiants pas d'accord
+      return 1;
+    } else { //3 étiquettes differentes
+      return 2;
+    }
+}
+
+function conflits_ik() {
+  var conflits = [[0, 0, 0], [0, 0, 0]];
+  var accords = 0;
+  var commits_studied = 0;
+  for (const [index, c] of my_labels.entries()) {
+    var two_commits = their_labels.filter(commit => {
+      return commit.commit_id == c.commit_id;
+    });
+    var flags = [false, false]; //["A","AM"]
+    if (c["type"] != "unknown" && c["activities"] != "perfectif,correctif,adaptif") { //it means do not incule those labels in stats
+      ++commits_studied;
+      if (c["type"] != two_commits[0]["type"] || c["type"] != two_commits[1]["type"]) {
+        flags[0] = true;
+      }
+      if (c["activities"] != two_commits[0]["activities"] || c["activities"] != two_commits[1]["activities"]) {
+        flags[1] = true;
+      }
+
+      if (flags[0] && flags[1]) {
+        const type = ".cas" + (get_cas("type", two_commits, c) + 1) + "_" + (get_cas("activities", two_commits, c) + 1) + " td:nth-child(4)";
+        var count = parseInt($(type).html());
+        $(type).html(count + 1);
+      } else if (flags[0]) {
+        ++conflits[0][get_cas("type", two_commits, c)];
+      } else if (flags[1]){
+        ++conflits[1][get_cas("activities", two_commits, c)];
+      } else {
+        ++accords;
+      }
+    } 
+  }
+
+  const sum_a = conflits[0].reduce((prev, curr) => prev + curr, 0);
+  const sum_am = conflits[1].reduce((prev, curr) => prev + curr, 0);
+  const sum_both = commits_studied - accords - sum_a - sum_am;
+  
+  $(".ik-compared").html(commits_studied);
+  $(".ik-accord-total").html(accords);
+  $(".ik-desaccord").html(sum_a + sum_am + sum_both);
+
+  $(".ik-a").html("Atomicité = " + sum_a + " <span class='percent'> (" + (sum_a * 100 / commits_studied).toFixed(1) + " %)</span>");
+  $(".ik-am").html("AM = " + sum_am + " <span class='percent'> (" + (sum_am * 100 / commits_studied).toFixed(1) + " %)</span>");
+  $(".ik-both").html("Les deux = " + sum_both + " <span class='percent'> (" + (sum_both * 100 / commits_studied).toFixed(1) + " %)</span>");
+    
+  $(".cas1 td:nth-child(2)").html(conflits[0][0]);
+  $(".cas1 td:nth-child(3)").html(conflits[1][0]);
+  $(".cas2 td:nth-child(2)").html(conflits[0][1]);
+  $(".cas2 td:nth-child(3)").html(conflits[1][1]);
+  $(".cas3 td:nth-child(2)").html(conflits[0][2]);
+  $(".cas3 td:nth-child(3)").html(conflits[1][2]);
+}
+
 
 function conflits_by_labels() {
   var tab = [];
@@ -221,7 +285,7 @@ function conflits_by_labels() {
     if (c["activities"] != mine["activities"]) {
       const cas = mine["activities"] + "  >>>  " + c["activities"];
       const index = tab.findIndex(x => x.cas === cas);
-      if ( mine["type"] != "unknown" && mine["activities"] != "perfectif,correctif,adaptif") { //it means do not incule those labels in stats
+      if ( mine["type"] != "unknown" && mine["activities"] != "perfectif,correctif,adaptif") { //it means do not include those labels in stats
         if (index != -1) {
           ++tab[index]["occurence"];
         } else {
@@ -270,7 +334,6 @@ function conflits_by_participants() {
       }
     });
 }
-
 
 //Init inputs with the default values
 function default_inputs(){

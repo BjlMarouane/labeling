@@ -595,6 +595,26 @@ table.table-stats.am {
     background-color: #6ff3bc!important;
 }
 
+.cas-desc{
+    width: 80%;
+    max-width: 900px;
+    margin: auto;
+    padding: 0 0 25px 40px;
+    font-weight: 600;
+}
+
+.stat-title{
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.table-stats.ik{
+    margin-bottom: 25px;
+}
+
+.table-stats.ik .percent{
+    color: #ffdfc3!important;
+}
 .txt-stats {
     font-size: 15px;
     font-weight: 600;

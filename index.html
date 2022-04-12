@@ -159,7 +159,108 @@
             </tr>
           </tbody>
         </table>
-        <div class="txt-stats">Nbre de commits étiquetés par les étudiants: <button class="participants" disabled></button> </div> 
+        
+        <h3 class="stat-title">--------------     Accord / Désaccord     --------------</h3>
+        <div class="txt-stats">
+          Nombre de commits comparés : <button class="ik-compared" disabled></button> <br>
+          Accord total: <button class="ik-accord-total" disabled style="margin-right: 75px;"></button>
+          Désaccord: <button class="ik-desaccord" disabled></button>
+        </div> 
+        <div class="cas-desc">
+          <div> Cas 1 = L'un des deux étudiants ne partage pas le même étiquetage que moi.</div>
+          <div> Cas 2 = Les deux étudiants ont le même étiquetage qui diffère du mien.</div>
+          <div> Cas 3 = Nos trois étiquettes sont différentes.</div>
+          <div> Cas X & Y = Cas X dans l'atomicité et Cas Y dans l'AM. </div>
+        </div>  
+        <table class="table-stats ik">
+          <tbody>
+            <tr>
+              <th colspan="1" rowspan="2">Cas de désaccord</th>
+              <th colspan="3">Déssacord par type de classification</th>
+            </tr>
+            <tr>              
+              <th width="25%" class="ik-a"></th>
+              <th width="25%" class="ik-am"></th>
+              <th width="25%" class="ik-both"></th>
+            </tr>           
+          </tbody>
+          <tbody class="ik-tbl">
+            <tr class="cas1">
+              <td> Cas 1 </td>
+              <td>0</td>
+              <td>0</td>
+              <td>-</td>
+            </tr>
+            <tr class="cas2">
+              <td> Cas 2 </td>
+              <td>0</td>
+              <td>0</td>
+              <td>-</td>
+            </tr>
+            <tr class="cas3">
+              <td> Cas 3 </td>
+              <td>0</td>
+              <td>0</td>
+              <td>-</td>
+            </tr>
+            <tr class="cas1_1">
+              <td> Cas 1 & 1 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas1_2">
+              <td> Cas 1 & 2 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas1_3">
+              <td> Cas 1 & 3 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas2_1">
+              <td> Cas 2 & 1 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas2_2">
+              <td> Cas 2 & 2 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas2_3">
+              <td> Cas 2 & 3 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas3_1">
+              <td > Cas 3 & 1 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas3_2">
+              <td> Cas 3 & 2 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+            <tr class="cas3_3">
+              <td> Cas 3 & 3 </td>
+              <td>-</td>
+              <td>-</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="txt-stats d-none">Nbre de commits étiquetés par les étudiants: <button class="participants" disabled></button> </div> 
         <div class="txt-stats">
            <h3>--- Désaccord entre les 3 étiquetages si on considère que:  ---</h3>
            <span>L'un des deux étudiants ne partage pas le même étiquetage que moi </span> <br>
@@ -168,7 +269,7 @@
            <span>Les deux étudiants ont le même étiquetage qui diffère du mien </span><br>
            <button class="diff2-atc" disabled>Atomicité: <span></span></button>
            <button class="diff2-am" disabled>AM: <span></span> </button><br>
-           <span>Nos trois étiquetages sont différents</span><br>
+           <span>Nos trois étiquettes sont différentes</span><br>
            <button class="diff3-am" disabled>AM: <span></span> </button><br>
 
           <h3>--- Désaccord par rapport à chaque étudiant ---</h3>
