@@ -168,6 +168,22 @@ function load_admin_page() {
     });
 }
 
+function load_juges() {
+  fetch(url + "/juges/?commit_id=" + current_commit)
+  .then((response) => response.json())
+  .then((data) => {
+    const juges = data['data'];
+    $(".juges").html("");
+    for (const [index, juge] of juges.entries()) {
+      if(juge['user_id'] != user_id){
+        const juge_elem = "<div>" + juge["name"] + " : <span class='jugement'>" + juge["type"] + "  |  " + juge["activities"] + " </span></div>";
+        $(".juges").append(juge_elem)
+      }
+    }
+    console.log(juges);
+  });
+}
+
 function show_conflits() {
   fetch(url + "/stats/" + user_id + "/all")
     .then((response) => response.json())
@@ -273,7 +289,6 @@ function conflits_ik() {
   $(".cas3 td:nth-child(2)").html(conflits[0][2]);
   $(".cas3 td:nth-child(3)").html(conflits[1][2]);
 }
-
 
 function conflits_by_labels() {
   var tab = [];
@@ -457,6 +472,7 @@ function load_commit() {
       } else {
         default_inputs();
       }
+      load_juges();
     });
 }
 

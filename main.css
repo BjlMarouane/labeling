@@ -329,6 +329,16 @@ table{
     font-weight: 700;
 }
 
+.jugement{
+    font-weight: 900;
+}
+
+.juges{
+    display: contents;
+    text-align: center;
+    font-weight: 500;
+}
+
 .login_view button{
     width: 100px;
     height: 45px;
