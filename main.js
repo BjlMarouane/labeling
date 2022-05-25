@@ -473,7 +473,7 @@ function load_commit() {
       } else {
         default_inputs();
       }
-      load_juges();
+      //load_juges();
     });
 }
 
@@ -753,9 +753,3 @@ var upload_file = (function () {
       window.URL.revokeObjectURL(url);
   };
 }());
-
-
-//Download commits click
-$(".download-commits").click(function () {
-  download_commits();
-});
