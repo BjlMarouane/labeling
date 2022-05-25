@@ -6,6 +6,8 @@ var clusters = [];
 var errors = [];
 var their_labels = [];
 var my_labels = [];
+var to_download = []; //To remove later
+var httpReq = new XMLHttpRequest(); 
 var url = (document.URL.indexOf("https") == -1) ? "http://localhost:3000" : "https://protected-hamlet-78090.herokuapp.com";
 
 $(".backButt").click(function () {
@@ -149,7 +151,6 @@ function load_admin_page() {
             ++labels[3];
             break;
           default:
-          // code block
         }
       }
 
@@ -266,8 +267,9 @@ function conflits_ik() {
         ++conflits[1][get_cas("activities", two_commits, c)];
       } else {
         ++accords;
+        //to_download.push(c.commit_id);
       }
-    } 
+    }
   }
 
   const sum_a = conflits[0].reduce((prev, curr) => prev + curr, 0);
@@ -364,6 +366,7 @@ function default_inputs(){
   }
   activities = "";
   clusters = [];
+  $(".fjuge_com textarea").val("")
 }
 
 //Tangled label verification
@@ -419,8 +422,6 @@ function load_commit() {
     .then((response) => {
       var data = response["data"];
       set_commit_infos();
-      //$(".project-name").html(data["project"]);
-      //$(".message").html(data["message"]);
 
       $("#temp").html(data["files"]);
       //$(".js-expandable-line").remove();
@@ -502,8 +503,11 @@ function load_commit_labels () {
       if (data["type"] == 'tangled') {
         type = '.tangButt';
         load_commit_clusters();
-      } else if (data["type"] == 'unknown') { type = '.skipButt'; }
+      } else if (data["type"] == 'unknown') {
+        type = '.skipButt';
+      }
       $(type).trigger('click');
+      $(".fjuge_com textarea").val(data["comments"])
     });
 }
 
@@ -561,21 +565,17 @@ function load_user_commits() {
     .then((data) => {
       commits = data["data"];
       if (commits.length) {
-        if (commits[commits.length - 1]["type"]) {
-          alert("You finished all the commits, Thank you for your time");
-        } else {
-          for (const [index, c] of commits.entries()) {
-            if (!c["type"]) {
-              current_commit = c["commit_id"];
-              $(".commitNum").html(index + 1);
-              $(".TotalCom").html(commits.length)
-              break;
-            }
+        for (const [index, c] of commits.entries()) {
+          if (!c["type"] || ((index + 1) == commits.length)) {
+            current_commit = c["commit_id"];
+            $(".commitNum").html(index + 1);
+            $(".TotalCom").html(commits.length)
+            break;
           }
-          load_commit();
-          $(".login_view").addClass("d-none");
-          $(".mycontainer").removeClass("d-none");
         }
+        load_commit();
+        $(".login_view").addClass("d-none");
+        $(".mycontainer").removeClass("d-none");
       } else {
         alert("Usernane not found.");
       }
@@ -608,7 +608,8 @@ function save_label() {
       user_id: user_id,
       type: $("button.chosen").attr("data-type"),
       activities: activities,
-      clusters: clusters
+      clusters: clusters,
+      commentaires: $(".fjuge_com textarea").val().replace('"', "‘").replace("'", "‘")
     })
   })
   .then((response) => response.json())
@@ -620,7 +621,7 @@ function save_label() {
         current_commit = commits[index]["commit_id"];
         load_commit();
       } else {
-        window.location.reload();
+        alert("It's all DONE!! thank you");
       }
    });
 }
@@ -668,7 +669,7 @@ function set_structure() {
     var full_path = "";
     for (const [j, name] of path.entries()) {
       var is_file = (j + 1) == path.length;
-      var parent = $(".structure div[data-path='" + full_path + "']");;
+      var parent = $(".structure div[data-path='" + full_path + "']");
       full_path += "/" + name
       var check = $(".structure div[data-path='" + full_path + "']");
       var location = ($(check).length == 0 && j == 0) ? $(".structure .modal-body") : $(parent);
@@ -689,4 +690,72 @@ $(".add_cls").click(function () {
   var num = parseInt($(this).prev("div").find("input").attr("data-cluster")) + 1;
   $("<div class='cls-desc cls_added'><label>" + num + ") </label> <input type='text' data-cluster='" + num + "'/></div>").insertBefore(this);
   $(".clusters_popup").append("<span>" + num + "</span>");
+});
+
+///Download commits
+function download_commits() {
+  for (link in to_download) {
+    const commit_link = to_download[link];
+    httpReq.open("GET", url + "/scraper/?commit_url=" + commit_link, false); 
+    httpReq.send();
+    var data = JSON.parse(httpReq.responseText)["data"];
+    
+    $("#temp").html(data["files"]);
+    var file_content = [];
+    file_content.push(commit_link);
+    
+    httpReq.open("GET", url + "/commit?commit_id=" + commit_link, false); 
+    httpReq.send();
+    file_content.push(JSON.parse(httpReq.responseText)["data"][0]["message"]);
+
+    httpReq.open("GET", url + "/labels?commit_url=" + commit_link + "&user_id=BENJIX0", false); 
+    httpReq.send();
+    var label = JSON.parse(httpReq.responseText)["data"][0];
+    file_content.push(label["type"] + "/" + label["activities"]);
+
+    file_content.push("");
+    $(".file").each(function (i) {
+      var file = $(this);
+      file_content.push("==> " + $(file).find(".file-header").attr("data-path")); //File path
+      $(file).find("tbody tr").each(function (j) {
+        var line = $(this);
+        if ($(line).attr("data-hunk")) {
+          var line_num = $(line).find(".js-linkable-line-number").attr("data-line-number") + "    "; //Numero de la ligne
+          var code = "   " + $(line).find(".blob-code-inner").text(); //la ligne de code
+          var sign = " ";
+          if ($(line).find(".blob-num").hasClass("blob-num-addition")) {
+            sign = "+";
+          } else if ($(line).find(".blob-num").hasClass("blob-num-deletion")) {
+            sign = "-";
+          }
+          file_content.push(line_num + sign + code);
+        } else {
+          file_content.push("       " + $(line).find(".blob-code-inner").html()); //code header
+        }
+      });
+      file_content.push("");
+      file_content.push("");
+    });
+    upload_file(file_content, commit_link);
+  } 
+}
+
+var upload_file = (function () {
+  var a = document.createElement("a");
+  document.body.appendChild(a);
+  a.style = "display: none";
+  return function (data, fileName) {
+      var blob = new Blob([data.join('\n')], {type: "octet/stream"}),
+          url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName + ".txt";
+      a.click();
+      window.URL.revokeObjectURL(url);
+  };
+}());
+
+
+//Download commits click
+$(".download-commits").click(function () {
+  download_commits();
 });

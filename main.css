@@ -714,9 +714,20 @@ select,input:focus {
     outline: none;
 }
 
+.fjuge_com{
+    text-align: center;
+    font-weight: 800;
+}
 
-
-
-
+.fjuge_com textarea{
+    height: 90px;
+    width: 100%;
+    resize: none;
+    border: 1px solid #8c8c8c;
+    border-radius: 7px;
+    background-color: white;
+    padding: 9px 18px;
+    font-size: 15px;
+}
 
 

@@ -23,6 +23,7 @@
           <button>Search</button>
         </div>
       </div>
+      
       <div class="row com-infos">
         <div class="col">
 
@@ -38,6 +39,7 @@
           <a class="github_link" href="" target="_blank">Lien Github</a>
         </div>
       </div>
+      
       <div class="row codeNactions">
         <div class="col-12 col-md-8 com-code"></div>
         <div class="col-6 col-md-4 actions">
@@ -49,11 +51,7 @@
                 <span class="TotalCom"></span></div>  
             </div>
           </div>
-          <div class="row juges">
-            <div class="lbl-juge1">Moi: <span></span></div>
-            <div class="lbl-juge2">Juge 1: <span></span></div>
-            <div class="lbl-juge3">Juge 2: <span></span></div>
-          </div>
+          <div class="row juges d-none"></div>
           <div class="row mybuttons">
             <div class="buttons col-12">
               <button type="button" class="btn atomButt" data-type="atomic">Atomique</button>
@@ -100,6 +98,10 @@
                 </div>
                 <div class="add_cls">+</div>
               </div>
+              <div class="col fjuge_com d-none">
+                <label>Commentaires:</label>
+                <textarea></textarea>
+              </div>
               <div class="row _bj4 save">
                 <button type="button" class="btn _bj5 backButt">Back</button>
                 <button type="button" class="btn _bj5 saveButt">Next</button>
@@ -107,11 +109,14 @@
             </div>
           </div>
         </div>
+      
       </div>
     </div>
+    
     <div id="temp" class="d-none"></div>
 
-    <div class="admin_view d-none">    
+    <div class="admin_view d-none">
+      <button class="download-commits">DOWNLOAD</button>    
       <div>
         <table class="table-stats atm">
           <tbody>
@@ -130,6 +135,7 @@
             </tr>
           </tbody>
         </table>
+
         <table class="table-stats am">
           <tbody>
             <tr>
